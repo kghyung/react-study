@@ -1,48 +1,38 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import ProtectRoute from "./components/ProtectRoute"
-import Header from "./components/Header"
-import HomePage from "./pages/HomePage"
-import UserPage from "./pages/UserPage"
-import LoginPage from "./pages/LoginPage"
-import ProductPage from "./pages/ProductPage"
 
-import { useState } from "react"
+import Header from "./components/Header"
+import ProtectedRoute from "./components/ProtectedRoute"
+
+import HomePage from "./pages/HomePage"
+import LoginPage from "./pages/LoginPage"
+import UserPage from "./pages/UserPage"
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   return (
     <BrowserRouter>
-      <Header
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-      />
+      <Header />
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
+
+        <Route
+          path="/"
+          element={<HomePage />}
+        />
 
         <Route
           path="/login"
-          element={
-            <LoginPage
-              setIsLoggedIn={setIsLoggedIn}
-            />
-          }
+          element={<LoginPage />}
         />
 
         <Route
           path="/users"
           element={
-            <ProtectRoute isLoggedIn={isLoggedIn}>
+            <ProtectedRoute>
               <UserPage />
-            </ProtectRoute>
+            </ProtectedRoute>
           }
         />
 
-        <Route
-          path="/products"
-          element={<ProductPage />}
-        />
       </Routes>
     </BrowserRouter>
   )

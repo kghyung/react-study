@@ -1,36 +1,29 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
-function Header({
-  isLoggedIn,
-  setIsLoggedIn,
-}) {
+function Header() {
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    setIsLoggedIn(false)
+  const { isLoggedIn, logout } = useAuth()
 
+  const handleLogout = () => {
+    logout()
     navigate("/login")
   }
 
   return (
     <header>
-      <h1>React Study</h1>
+      <h1>My React App</h1>
 
-      <nav>
-        <Link to="/">홈</Link>{" "}
-        <Link to="/users">사용자</Link>{" "}
-        <Link to="/products">상품</Link>{" "}
-
-        {isLoggedIn ? (
-          <button onClick={handleLogout}>
-            로그아웃
-          </button>
-        ) : (
-          <Link to="/login">
-            로그인
-          </Link>
-        )}
-      </nav>
+      {isLoggedIn ? (
+        <button onClick={handleLogout}>
+          로그아웃
+        </button>
+      ) : (
+        <button onClick={() => navigate("/login")}>
+          로그인
+        </button>
+      )}
     </header>
   )
 }

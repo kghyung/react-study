@@ -1,19 +1,21 @@
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
-function LoginPage({ setIsLoggedIn }) {
+function LoginPage() {
   const navigate = useNavigate()
 
-  const handleLogin = () => {
-    // 실제로는 여기서 서버에 로그인 API 요청
+  const { login } = useAuth()
 
-    setIsLoggedIn(true)
+  const handleLogin = () => {
+    // 실제 로그인 API는 나중에 연결
+    login()
 
     navigate("/users")
   }
 
   return (
     <div>
-      <h1>로그인</h1>
+      <h2>로그인</h2>
 
       <button onClick={handleLogin}>
         로그인

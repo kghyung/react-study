@@ -1,17 +1,22 @@
-import useToggle from "../hooks/useToggle"
+import { useCallback, useState } from "react"
+import CounterButton from "../components/CounterButton"
 
 function HomePage() {
-  const [isOpen, toggle] = useToggle(false)
+  const [count, setCount] = useState(0)
+
+  const handleIncrease = useCallback(() => {
+    setCount(prev => prev + 1)
+  }, [])
 
   return (
     <div>
-      <button onClick={toggle}>
-        열기 / 닫기
-      </button>
+      <h2>Count: {count}</h2>
 
-      {isOpen && (
-        <p>내용이 열렸습니다!!!!!</p>
-      )}
+      <CounterButton onClick={handleIncrease} />
+
+      <button onClick={() => console.log("다른 버튼!!!!!")}>
+        다른 버튼
+      </button>
     </div>
   )
 }

@@ -7,8 +7,13 @@ function LoginPage() {
   const { login } = useAuth()
 
   const handleLogin = () => {
-    // 실제 로그인 API는 나중에 연결
-    login()
+    const user = {
+      id: 1,
+      name: "규형",
+      email: "test@test.com",
+    }
+
+    login(user)
 
     navigate("/users")
   }

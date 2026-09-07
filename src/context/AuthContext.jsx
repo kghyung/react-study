@@ -1,30 +1,83 @@
-import { createContext, useContext, useState } from "react"
+import {
+  createContext,
+  useContext,
+  useReducer,
+} from "react"
 
 const AuthContext = createContext()
 
+const initialState = {
+  isLoggedIn:
+    localStorage.getItem("isLoggedIn") === "true",
+  user: null,
+  loading: false,
+  error: null,
+}
+
+function authReducer(state, action) {
+  switch (action.type) {
+    case "LOGIN":
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: action.payload,
+        error: null,
+      }
+
+    case "LOGOUT":
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
+      }
+
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      }
+
+    case "SET_ERROR":
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    default:
+      return state
+  }
+}
+
 export function AuthProvider({ children }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem("isLoggedIn") === "true"
-  })
+  const [state, dispatch] = useReducer(
+    authReducer,
+    initialState
+  )
 
-  const login = () => {
-    setIsLoggedIn(true)
-
+  const login = (user) => {
     localStorage.setItem("isLoggedIn", "true")
+
+    dispatch({
+      type: "LOGIN",
+      payload: user,
+    })
   }
 
   const logout = () => {
-    setIsLoggedIn(false)
-
     localStorage.removeItem("isLoggedIn")
+
+    dispatch({
+      type: "LOGOUT",
+    })
   }
 
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn,
+        state,
         login,
         logout,
+        dispatch,
       }}
     >
       {children}
